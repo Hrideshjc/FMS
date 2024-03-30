@@ -1,0 +1,5 @@
+
+enum Lang { NP, ENG }
+
+
+

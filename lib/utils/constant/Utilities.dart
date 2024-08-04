@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:VMS/utils/api_helper/api_urls.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -196,4 +197,31 @@ class Utilities {
       return num.toStringAsFixed(1) + 'M';
     }
   }
+  String convertDate(String timeString) {
+    // Parse the given string into a DateTime object
+    DateTime dateTime = DateTime.parse(timeString);
+
+    // Format the DateTime object into "MMMM d, yyyy" format (e.g., "April 10, 2024")
+    String formattedDate = DateFormat("MMMM d, yyyy").format(dateTime);
+
+    return formattedDate;
+  }
+
+  String convertTime(String timeString) {
+    // Parse the given string into a DateTime object
+    DateTime dateTime = DateTime.parse(timeString);
+
+    // Format the DateTime object into "h:mm a" format (e.g., "3:00 PM")
+    String formattedTime = DateFormat("h:mm a").format(dateTime);
+
+    return formattedTime;
+  }
+    String removeDynamicPart(String originalUrl) {
+    RegExp regex = RegExp(r"http:\/\/[\w\.:]+\/");
+    var value = "${ApiUrl.mainUrl}${ originalUrl.replaceFirst(regex, "")}";
+    return value;
+  }
 }
+
+
+

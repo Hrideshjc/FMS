@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:VMS/utils/constant/constant.dart';
 import 'package:http/http.dart' as http;
 
 import 'app_exception.dart';
@@ -20,33 +21,91 @@ class ApiBaseHelper {
 
   Future<dynamic> getWithToken(String url) async {
     // var responseJson;
-    try {
-      var cookie = Cookie("sessionString",
-          "rade%7C1ed32990-12cd-4438-b26d-1c30061b762e%7C9000eefec90ab38d9db38e1c51aa9ab1c2c04a85e568411bbc3f7d396609d8f6");
+    print("this is token: ${Constants.currentToken}");
+    // try {
+
 
       var headers = {
-        // 'Host': '192.168.1.8:3000',
-        'Connection': 'keep-alive',
-        // 'Cache-Control': 'max-age=0',
-        // 'Upgrade-Insecure-Requests': '1',
-        // 'User-Agent':
-        //     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        // 'Accept':
-        //     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'Accept-Encoding': 'gzip, deflate',
-        // 'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
-        'Cookie': 'sessionString=Terobau',
-        'If-None-Match': 'W/"10-/VnJyQBB0+b7i4NY83P42KKVWsM"'
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ${Constants.currentToken}',
       };
 
       final response = await http.get(Uri.parse(url), headers: headers);
       print("this is response ${response.body}");
       print(" this is the header ${response.headers}");
       //  return response;
-      return null;
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
+      return jsonDecode(response.body);
+    // } on SocketException {
+    //   throw FetchDataException('No Internet connection');
+    // }
+    // return responseJson;
+  }
+
+
+
+  Future<dynamic> postWithToken(String url, body) async {
+    // var responseJson;
+    print("this is token: ${Constants.currentToken}");
+    // try {
+
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ${Constants.currentToken}',
+      };
+
+      final response = await http.post(Uri.parse(url),body: body, headers: headers);
+      print("this is response ${response.body}");
+      print(" this is the header ${response.headers}");
+      //  return response;
+      return jsonDecode(response.body);
+    // } on SocketException {
+    //   throw FetchDataException('No Internet connection');
+    // }
+    // return responseJson;
+  }
+
+    Future<dynamic> postWithTokennoBody(String url, ) async {
+    // var responseJson;
+    print("this is token: ${Constants.currentToken}");
+    // try {
+
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ${Constants.currentToken}',
+      };
+
+      final response = await http.post(Uri.parse(url), headers: headers);
+      print("this is response ${response.body}");
+      print(" this is the header ${response.headers}");
+      //  return response;
+      return jsonDecode(response.body);
+    // } on SocketException {
+    //   throw FetchDataException('No Internet connection');
+    // }
+    // return responseJson;
+  }
+
+  Future<dynamic> deleteWithToken(String url) async {
+    // var responseJson;
+    print("this is token: ${Constants.currentToken}");
+    // try {
+
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ${Constants.currentToken}',
+      };
+
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      print("this is response ${response.body}");
+      print(" this is the header ${response.headers}");
+      //  return response;
+      return jsonDecode(response.body);
+    // } on SocketException {
+    //   throw FetchDataException('No Internet connection');
+    // }
     // return responseJson;
   }
 

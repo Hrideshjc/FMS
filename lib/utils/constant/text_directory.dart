@@ -14,7 +14,7 @@ class UIStrings {
   static get login => Constants.currentLang == Lang.ENG ? "Login" : "लग - इन";
 
   static get emailEnter => Constants.currentLang == Lang.ENG
-      ? "Enter your Email"
+      ? "Enter your Username"
       : "आफ्नो इमेल प्रविष्ट गर्नुहोस्";
 
   static get nameEnter => Constants.currentLang == Lang.ENG
@@ -308,9 +308,8 @@ class UITextValidation {
       ? "Password should not be greater than 15 characters"
       : "पासवर्ड १५ वर्णभन्दा बढी हुनु हुँदैन";
 
-  static get invalidEmail => Constants.currentLang == Lang.ENG
-      ? "Invalid Email"
-      : "अवैध इमेल";
+  static get invalidEmail =>
+      Constants.currentLang == Lang.ENG ? "Invalid Email" : "अवैध इमेल";
 
   static get atLeastPhoneNumber => Constants.currentLang == Lang.ENG
       ? "Phone should be atleast 6 characters"

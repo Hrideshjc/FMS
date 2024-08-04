@@ -40,12 +40,6 @@ class _LoginViewState extends State<LoginView> {
         ),
         body: SafeArea(
           child: Container(
-            // height: MediaQueryHelper.screenHeight(context) * 1,
-
-            // decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //       fit: BoxFit.fitWidth,
-            //         image: AssetImage(ImagesDirectory.loginBackground))),
             child: Form(
               key: authProvider.loginFormKey,
               child: SingleChildScrollView(
@@ -54,7 +48,6 @@ class _LoginViewState extends State<LoginView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     _buildUpperBody(),
-                    // LanguageSelector(),
                   ],
                 ),
               ),
@@ -92,12 +85,10 @@ class _LoginViewState extends State<LoginView> {
               CustomTextField(
                 controller: authProvider.emailLoginController,
                 labelText: '${UIStrings.emailEnter}',
-                // validator: (value) => validateEmail(string: value!),
               ),
               CustomTextField(
                 controller: authProvider.passwordLoginController,
                 labelText: '${UIStrings.passwordEnter}',
-                // validator: (value) => validatePassword(string: value!),
                 suffix: IconButton(
                     onPressed: () {
                       setState(() {
@@ -132,8 +123,8 @@ class _LoginViewState extends State<LoginView> {
                 radius: 5,
                 title: "${UIStrings.login}",
                 onPressed: () {
-
-                 authProvider.sendLoginData(context);
+                  print("heoolo mg");
+                  authProvider.sendLoginData(context);
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

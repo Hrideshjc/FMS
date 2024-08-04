@@ -2,6 +2,8 @@ import 'package:VMS/controller/fieldcontroller.dart';
 import 'package:VMS/module/home_page/dashboard.dart';
 import 'package:VMS/module/home_page/futsal_detail_page.dart';
 import 'package:VMS/module/home_page/home_state.dart';
+import 'package:VMS/utils/api_helper/api_urls.dart';
+import 'package:VMS/utils/constant/Utilities.dart';
 import 'package:VMS/utils/constant/images_directory.dart';
 import 'package:flutter/material.dart';
 
@@ -60,10 +62,7 @@ class HomePageBuilder {
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DashboardView()),
-                        );
+                        Navigator.pop(context);
                       },
                       icon: const Icon(
                         Icons.arrow_back_ios_new,
@@ -91,16 +90,20 @@ class HomePageBuilder {
                                 ),
                                 border: InputBorder.none),
                             onChanged: (newValue) {
+                              // print("this value $newValue");
+                              // setState(() {
+                              homePage.searchfutsalController(context, newValue); 
                               // homePageController.searchFutsal.value = newValue;
                             },
                           )),
                     ),
                     const SizedBox(height: 5),
+                    if (homePage.getFutsal !=null)
                     Expanded(
                       child:  ListView.builder(
-                            itemCount: homePage.futsal['data'].length,
+                            itemCount: homePage.getFutsal!.data!.length,
                             itemBuilder: (context, index) {
-                              var futsal = homePage.futsal['data'][index];
+                              var futsal = homePage.getFutsal!.data![index];
                               return InkWell(
                                   onTap: () {
                                 // homePageController.initialImage.value = futsal.imagePath;
@@ -108,7 +111,7 @@ class HomePageBuilder {
                                 // homePageController.intialPrice.value = futsal.pricePerHour.toString();
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => FutsalDetailPage()),
+                                  MaterialPageRoute(builder: (context) => FutsalDetailPage(selectedfutsal: futsal,)),
                                 );
                               },
                                 child: Padding(
@@ -124,20 +127,27 @@ class HomePageBuilder {
                                         child: Column(
                                           children: [
                                             ClipRRect(
+
                                               child: Image.network(
-                                                "https://tse1.mm.bing.net/th?id=OIP.8eJNMEsDP4uYuV4dl--i9gHaE8&pid=Api&P=0&h=220"
+                                                // UrlManipulator(futsal.fieldImage.toString()).replaceBaseUrl(ApiUrl.mainUrl)
+                                                Utilities().removeDynamicPart(futsal.fieldImage.toString())
+                                                // height: 150,
+                                                // width: double.infinity,
+                                                
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
                                             ListTile(
                                               title: Text(
-                                                futsal['futsalName'].toString(),
+                                               
+                                                // UrlManipulator(futsal.fieldImage.toString()).toString(),
+                                               futsal.futsalName.toString(),
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.w500),
                                               ),
                                               subtitle: Text(
-                                                  'Rs. ${futsal['pricePerHour'].toString()}'),
+                                                  'Rs. ${futsal.pricePerHour.toString()}'),
                                             ),
                                           ],
                                         ),

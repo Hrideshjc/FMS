@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:VMS/module/authentication/login_view/secondSignup.dart';
 import 'package:VMS/module/home_page/dashboard.dart';
+import 'package:VMS/module/home_page/maindashboard.dart';
 import 'package:VMS/utils/api_helper/api_urls.dart';
 import 'package:VMS/utils/constant/Utilities.dart';
+import 'package:VMS/utils/constant/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +34,9 @@ class AuthState extends ChangeNotifier {
   /*--------------- For Registration Page ----------*/
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   final TextEditingController nameRegisterController = TextEditingController();
-  final TextEditingController emailRegisterController = TextEditingController(); ///used in otp///
+  final TextEditingController emailRegisterController = TextEditingController();
+
+  ///used in otp///
   final TextEditingController conformPasswordRegisterController =
       TextEditingController();
   final TextEditingController passwordRegisterController =
@@ -43,7 +48,6 @@ class AuthState extends ChangeNotifier {
     if (registerFormKey.currentState?.validate() ?? false) {
       var value = await registerCostumerController(context);
       if (value != null) {
-        print("this is value ${value}");
 
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -53,8 +57,6 @@ class AuthState extends ChangeNotifier {
       }
     }
   }
-
-
 
   /*--------------- verify-customer Page ----------*/
   final GlobalKey<FormState> otpVerifyFormKey = GlobalKey<FormState>();
@@ -67,12 +69,11 @@ class AuthState extends ChangeNotifier {
         Navigator.pushNamedAndRemoveUntil(
           context,
           Routes.homePage,
-              (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
         );
       }
     }
   }
-
 
   /*--------------- For loading Apis ----------*/
   bool loadingAuth = false;
@@ -81,7 +82,6 @@ class AuthState extends ChangeNotifier {
 
   /*--------------- Api calling ----------*/
   sendLoginData(BuildContext context) async {
-    print("la chitryo ");
     final authServices = ApiBaseHelper();
 
     loadingAuth = true;
@@ -92,24 +92,17 @@ class AuthState extends ChangeNotifier {
       "password": passwordLoginController.text
     };
 
-print("this is body : $body");
     authServices.post(ApiUrl.login, body).then((value) async {
-      print("inside auth $value");
       var body = jsonDecode(value.body);
 
-      if(value.statusCode != 200 ){
+      if (value.statusCode != 200) {
+        Utilities.showCustomSnackBar("${body['message']}");
+      } else {
+        Constants.currentToken = "${body['accessToken']}";
 
- Utilities.showCustomSnackBar( "${body['message']}");
-      
-      }else {
-
-      
- Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DashboardView()));
-                           Utilities.showCustomSnackBar( "${body['message']}");
-      
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const MainDashboardPage()));
+        Utilities.showCustomSnackBar("${body['message']}");
       }
       // if( value )
       // if (value == null) {
@@ -156,30 +149,54 @@ print("this is body : $body");
       "userRole": "player",
       "password": passwordRegisterController.text
     };
-
     var response = await authServices.post(ApiUrl.signUp, body);
 
     notifyListeners();
-    print("this is body ${response.body}");
 
     if (response.body != null) {
-
-      var data  = jsonDecode(response.body);
-      print("this is response1233 ${data}");
+      var data = jsonDecode(response.body);
       loadingSignUp = false;
 
       Utilities.showCustomSnackBar(data["message"]);
-      if (data['status'] == false){
-
+      if (data['status'] == false) {
       } else {
-        
- Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DashboardView()));
-                          
+//  Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) =>  SecondSignup()));
       }
-    
+    }
+  }
+
+  registerCostumerInformationController(BuildContext context, firstName,
+      lastName, age, email, phone, position) async {
+    final authServices = ApiBaseHelper();
+    loadingSignUp = true;
+    notifyListeners();
+    var body = {
+      "firstName": "$firstName",
+      "lastName": "$lastName",
+      "age": "$age",
+      "email": "$email",
+      "phone": "$phone",
+      "position": "$position"
+    };
+
+    var response =
+        await authServices.post(ApiUrl.registerInformation, jsonEncode(body));
+
+    notifyListeners();
+
+    if (response.body != null) {
+      var data = jsonDecode(response.body);
+      loadingSignUp = false;
+
+      Utilities.showCustomSnackBar(data["message"]);
+      if (data['status'] == false) {
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => MainDashboardPage()));
+      }
     }
   }
 
@@ -196,10 +213,9 @@ print("this is body : $body");
 
     notifyListeners();
     if (response != null) {
-      print("this is response $response");
       loadingVerify = false;
       if (response['error'] == true) {
-        switch (response['msg'] ) {
+        switch (response['msg']) {
           case "email":
             Utilities.showCustomSnackBar(response["message"]["email"][0]);
 

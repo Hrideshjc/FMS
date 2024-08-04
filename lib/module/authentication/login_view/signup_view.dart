@@ -1,3 +1,4 @@
+import 'package:VMS/utils/constant/Utilities.dart';
 import 'package:VMS/utils/constant/text_directory.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,15 +57,15 @@ class _SignUpState extends State<SignUp> {
                     labelText: '${UIStrings.nameEnter}',
                     validator: (value) => validateIsEmpty(string: value!),
                   ),
-                  CustomTextField(
-                    controller: authProvider.emailRegisterController,
-                    labelText: '${UIStrings.emailEnter}',
-                    // validator: (value) => validateEmail(string: value!),
-                  ),
+                  // CustomTextField(
+                  //   controller: authProvider.emailRegisterController,
+                  //   labelText: '${UIStrings.emailEnter}',
+                  //   // validator: (value) => validateEmail(string: value!),
+                  // ),
                   CustomTextField(
                     controller: authProvider.passwordRegisterController,
                     labelText: '${UIStrings.passwordEnter}',
-                    // validator: (value) => validatePassword(string: value!),
+                    validator: (value) => validatePassword(string: value!),
                     suffix: IconButton(
                         onPressed: () {
                           setState(() {
@@ -82,10 +83,10 @@ class _SignUpState extends State<SignUp> {
                   CustomTextField(
                     controller: authProvider.conformPasswordRegisterController,
                     labelText: '${UIStrings.conformPasswordEnter}',
-                    // validator: (value) => confirmPassword(
-                    //     password: authProvider.passwordRegisterController.text,
-                    //     cPassword: authProvider
-                    //         .conformPasswordRegisterController.text),
+                    validator: (value) => confirmPassword(
+                        password: authProvider.passwordRegisterController.text,
+                        cPassword: authProvider
+                            .conformPasswordRegisterController.text),
                     suffix: IconButton(
                         onPressed: () {
                           setState(() {
@@ -105,7 +106,16 @@ class _SignUpState extends State<SignUp> {
                     radius: 5,
                     title: "${UIStrings.signUp}",
                     onPressed: () {
-                      authProvider.registerCostumerController(context);
+                       if (authProvider.registerFormKey.currentState!.validate()) {
+                  // Form is valid, do something with the data
+                 authProvider.registerCostumerController(context);
+                  // Perform further actions like submitting data
+                } else {
+                  Utilities.showCustomSnackBar("Please Check Credential. ");
+                }
+                      
+
+                      
 
                     },
                     // isLoading: authProvider.loadingSignUp == true,

@@ -1,11 +1,13 @@
+// ignore_for_file: unused_import
+
 import 'package:VMS/module/font_page/splash_screen.dart';
 import 'package:VMS/module/home_page/dashboard.dart';
+import 'package:VMS/module/home_page/maindashboard.dart';
 
 import '../module/authentication/login_view/forget_password_view.dart';
 import '../module/authentication/login_view/login_page.dart';
 import '../module/authentication/login_view/signup_verification_view.dart';
 import '../module/authentication/login_view/signup_view.dart';
-import '../module/home_page/home_view.dart';
 import 'app_route.dart';
 
 class AppPages {
@@ -24,6 +26,6 @@ class AppPages {
 
     /*-------------- Home View Page ---------------------*/
     // Routes.homePage: (context) => const HomePageView(),
-    Routes.homePage: (context) => const DashboardView(),
+    Routes.homePage: (context) => const MainDashboardPage(),
   };
 }
